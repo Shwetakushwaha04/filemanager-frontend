@@ -1,0 +1,21 @@
+<div class="flex justify-between items-centre mb-4">
+  <h2 class="text-lg font-semibold">My Files</h2>
+  <button (click)="toggleView()" class="text-sm bg-teal-700 text-wgite px-3 py-1 rounded">
+    Toggle to {{ viewMode() === 'grid'? 'List' : 'Grid' }} View
+  </button>
+</div>
+
+<!-- File List  -->
+<div *ngIf= "viewMode() === 'list'" class="space-y-2">
+  <div *ngFor = "let file of files" class = "bg-white p-4 rounded shadow flex justify-between items-center">
+    <div>
+      <div class="font-medium">{{ file.name}}</div>
+      <div class="text-xs text-gray-500 ">Size:{{file.size}}</div>
+    </div>
+    <div class="text-xs text-grey-400 "></div>
+  </div>
+</div>
+<!-- File grid -->
+ <div *ngIf="viewMode() === 'grid'" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+  <app-file-card *ngFor = "let file of files" [file]="file"></app-file-card>
+ </div>
