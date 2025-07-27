@@ -1,0 +1,40 @@
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow p-4 w-full max-w-sm">
+  <div class="flex items-center justify-between mb-2">
+    <h2 class="text-sm font-semibold text-gray-800 dark:text-white">Storage</h2>
+    <span class="text-xs text-gray-500 dark:text-gray-400">This Month ⌄</span>
+  </div>
+
+  <!-- Pie chart -->
+  <ngx-charts-pie-chart
+    [view]="[250, 250]"
+    [results]="pieData"
+    [legend]="false"
+    [labels]="true"
+    [doughnut]="true"
+    [explodeSlices]="false"
+    [gradient]="false"
+    [colorScheme]="colorScheme"
+  >
+  </ngx-charts-pie-chart>
+
+  <!-- Total in center -->
+  <p class="text-center text-sm mt-2 dark:text-white font-semibold">
+    Total {{ total }} GB
+  </p>
+
+  <!-- Breakdown -->
+  <div class="mt-4 space-y-1 text-xs dark:text-gray-300">
+    <div class="flex justify-between">
+      <span class="text-orange-500 font-medium">Video</span> <span>4.5 GB</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-green-500 font-medium">Audio</span> <span>2.5 GB</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-blue-500 font-medium">Photos</span> <span>1.5 GB</span>
+    </div>
+    <div class="flex justify-between">
+      <span class="text-yellow-500 font-medium">Documents</span> <span>1.5 GB</span>
+    </div>
+  </div>
+</div>

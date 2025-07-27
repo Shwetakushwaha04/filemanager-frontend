@@ -8,4 +8,11 @@ import { RouterModule } from '@angular/router'; // ✅ Import this
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css'
 })
-export class Sidebar {}
+export class Sidebar {
+  usedStorage = 4.2;
+  totalStorage = 10;
+
+  get usagePercent(): number {
+    return (this.usedStorage / this.totalStorage) * 100;
+  }
+}

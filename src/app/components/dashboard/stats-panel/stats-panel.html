@@ -1,11 +1,13 @@
 <!-- Stats Overview Section -->
-<h2 class="text-lg font-semibold mb-4">Overview</h2>
+<h2 class="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Overview</h2>
+
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-  <div *ngFor="let stat of stats" class="bg-white p-4 rounded shadow">
-    <div class="text-sm text-gray-500">{{ stat.title }}</div>
-    <div class="text-xl font-bold">{{ stat.count }}</div>
+  <div *ngFor="let stat of stats" class="bg-white dark:bg-gray-900 p-4 rounded shadow dark:shadow-md">
+    <div class="text-sm text-gray-500 dark:text-gray-300">{{ stat.title }}</div>
+    <div class="text-xl font-bold text-gray-800 dark:text-white">{{ stat.count }}</div>
   </div>
 </div>
+
 
 <!-- Categories Section -->
 <h3 class="text-md font-semibold mt-6 mb-2">Categories</h3>

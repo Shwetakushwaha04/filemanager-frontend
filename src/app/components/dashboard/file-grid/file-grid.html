@@ -1,21 +1,34 @@
-<div class="flex justify-between items-centre mb-4">
-  <h2 class="text-lg font-semibold">My Files</h2>
-  <button (click)="toggleView()" class="text-sm bg-teal-700 text-wgite px-3 py-1 rounded">
-    Toggle to {{ viewMode() === 'grid'? 'List' : 'Grid' }} View
+<div class="flex justify-between items-center mb-4">
+  <h2 class="text-lg font-semibold text-gray-900 dark:text-white">My Files</h2>
+  <button
+    (click)="toggleView()"
+    class="text-sm bg-teal-700 text-white px-3 py-1 rounded"
+  >
+    Toggle to {{ viewMode() === 'grid' ? 'List' : 'Grid' }} View
   </button>
 </div>
 
-<!-- File List  -->
-<div *ngIf= "viewMode() === 'list'" class="space-y-2">
-  <div *ngFor = "let file of files" class = "bg-white p-4 rounded shadow flex justify-between items-center">
-    <div>
-      <div class="font-medium">{{ file.name}}</div>
-      <div class="text-xs text-gray-500 ">Size:{{file.size}}</div>
+<app-folder-section></app-folder-section>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 p-4 bg-white dark:bg-gray-900">
+
+  <!-- Left side: Files -->
+  <div class="lg:col-span-2 space-y-4">
+    <!-- List View -->
+    <div *ngIf="viewMode() === 'list'" class="space-y-2">
+      <div *ngFor="let file of files" class="bg-white dark:bg-gray-800 p-4 rounded shadow flex justify-between items-center">
+        <div>
+          <div class="font-medium text-gray-800 dark:text-white">{{ file.name }}</div>
+          <div class="text-xs text-gray-500 dark:text-gray-400">Size: {{ file.size }}</div>
+        </div>
+      </div>
     </div>
-    <div class="text-xs text-grey-400 "></div>
+
+    <!-- Grid View -->
+    <div *ngIf="viewMode() === 'grid'" class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <app-file-card *ngFor="let file of files" [file]="file" />
+    </div>
   </div>
+
+
 </div>
-<!-- File grid -->
- <div *ngIf="viewMode() === 'grid'" class="grid grid-cols-2 md:grid-cols-3 gap-4">
-  <app-file-card *ngFor = "let file of files" [file]="file"></app-file-card>
- </div>

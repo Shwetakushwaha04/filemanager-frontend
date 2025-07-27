@@ -1,11 +1,36 @@
-<div class="w-64 bg-teal-800 text-white h-screen fixed left-0 top-0">
-  <div class="p-6 font-bold text-xl">FileArlo</div>
-  <nav class="mt-6 space-y-2 text-sm">
-    <a routerLink="/" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Dashboard</a>
-    <a routerLink="/my-storage" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">My Storage</a>
-    <a routerLink="/recent" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Recent</a>
-    <a routerLink="/shared-link" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Shared Link</a>
-    <a routerLink="/favorite" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Favorite</a>
-    <a routerLink="/trash" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Trash</a>
-  </nav>
+<div class="w-64 bg-teal-800 text-white h-screen fixed left-0 top-0 flex flex-col justify-between">
+  <!-- Logo -->
+  <div>
+    <div class="p-6 font-bold text-xl">File Manager</div>
+
+    <!-- Nav Links -->
+    <nav class="mt-6 space-y-2 text-sm">
+      <a routerLink="/dashboard" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Dashboard</a>
+      <a routerLink="/my-storage" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">My Storage</a>
+      <a routerLink="/recent" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Recent</a>
+      <a routerLink="/shared-link" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Shared Link</a>
+      <a routerLink="/favorite" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Favorite</a>
+      <a routerLink="/trash" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Trash</a>
+    </nav>
+  </div>
+
+  <!-- Storage Usage -->
+  <div class="px-6 py-4 text-sm bg-teal-900">
+    <p class="mb-2 font-semibold">Storage</p>
+
+    <div class="w-full h-2 bg-teal-600 rounded-full overflow-hidden">
+      <div
+        class="h-full bg-white rounded-full transition-all duration-300"
+        [style.width.%]="usagePercent"
+      ></div>
+    </div>
+
+    <p class="mt-2 text-xs text-gray-200">
+      {{ usedStorage }} GB of {{ totalStorage }} GB used
+    </p>
+
+    <button class="mt-2 w-full text-xs py-1 px-2 rounded bg-white text-teal-800 hover:bg-gray-100 transition">
+      Upgrade Plan
+    </button>
+  </div>
 </div>

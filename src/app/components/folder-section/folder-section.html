@@ -1,0 +1,91 @@
+<!-- Top welcome message -->
+<div class="dashboard-header">
+  <h1>
+    Welcome to {{ location === 'dashboard' ? 'Your Dashboard' : 'Your Storage'
+    }}
+  </h1>
+  <p>All your folders and files at one place.</p>
+
+  <!-- Show when no folders -->
+  <div *ngIf="folders.length === 0" class="empty-dashboard">
+    <h2>No folders found</h2>
+    <p>Click "+ New Folder" to get started!</p>
+  </div>
+</div>
+<div class="flex flex-wrap gap-6">
+  <div
+    *ngFor="let folder of folders"
+    class="group relative border rounded-xl p-4 bg-white dark:bg-gray-800 shadow hover:shadow-lg transition cursor-pointer w-48"
+    (dblclick)="goToFolder(folder.id)"
+  >
+    <!-- Checkbox + Context menu trigger -->
+    <div
+      class="absolute top-2 left-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition"
+    >
+      <input type="checkbox" class="accent-teal-600 w-4 h-4" />
+    </div>
+
+    <!-- 3-dot menu trigger -->
+    <div
+      class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition"
+    >
+      <button
+        class="text-gray-400 hover:text-black dark:hover:text-white text-lg"
+        (click)="toggleMenu(folder.id); $event.stopPropagation()"
+      >
+        ⋮
+      </button>
+    </div>
+
+    <!-- 📁 Folder Icon -->
+    <div class="text-5xl mb-2 text-yellow-500">📁</div>
+
+    <!-- Folder name (editable or view) -->
+    <div *ngIf="folder.isEditing; else folderNameView">
+      <input
+        [(ngModel)]="folder.name"
+        (keydown.enter)="finishRename(folder)"
+        (blur)="finishRename(folder)"
+        class="border px-2 py-1 rounded w-full"
+        autofocus
+      />
+    </div>
+
+    <ng-template #folderNameView>
+      <div class="font-semibold text-sm flex items-center justify-between">
+        {{ folder.name }}
+        <button
+          class="text-xs text-gray-400 hover:text-blue-600"
+          (click)="startRename(folder)"
+          title="Rename"
+        >
+          ✏️
+        </button>
+      </div>
+    </ng-template>
+
+    <!-- Folder date -->
+    <div class="text-xs text-gray-400 mt-1">
+      {{ folder.createdAt | date: 'short' }}
+    </div>
+
+    <!-- Context Menu -->
+    <div
+      *ngIf="menuOpenForId === folder.id"
+      class="absolute right-0 mt-1 w-32 bg-white dark:bg-gray-900 border rounded shadow z-50"
+    >
+      <button
+        class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
+        (click)="startRename(folder); $event.stopPropagation()"
+      >
+        Rename
+      </button>
+      <button
+        class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
+        (click)="folderService.deleteFolder(folder.id); $event.stopPropagation()"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
+</div>
