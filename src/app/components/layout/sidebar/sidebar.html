@@ -1,35 +1,27 @@
-<div class="w-64 bg-teal-800 text-white h-screen fixed left-0 top-0 flex flex-col justify-between">
+<div class="h-screen flex flex-col justify-between text-sm text-gray-700 dark:text-white">
   <!-- Logo -->
-  <div>
-    <div class="p-6 font-bold text-xl">File Manager</div>
+  <div class="px-6 pt-6 pb-2 font-bold text-lg">File Manager</div>
 
-    <!-- Nav Links -->
-    <nav class="mt-6 space-y-2 text-sm">
-      <a routerLink="/dashboard" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Dashboard</a>
-      <a routerLink="/my-storage" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">My Storage</a>
-      <a routerLink="/recent" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Recent</a>
-      <a routerLink="/shared-link" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Shared Link</a>
-      <a routerLink="/favorite" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Favorite</a>
-      <a routerLink="/trash" routerLinkActive="bg-teal-700" class="block px-6 py-2 hover:bg-teal-700">Trash</a>
-    </nav>
-  </div>
+  <!-- Navigation Links -->
+  <nav class="flex-1 space-y-1 mt-4 px-4">
+    <a routerLink="/dashboard" routerLinkActive="bg-gray-100 dark:bg-gray-800" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Dashboard</a>
+    <a routerLink="/my-storage" routerLinkActive="bg-gray-100 dark:bg-gray-800" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">My Storage</a>
+    <a routerLink="/recent" routerLinkActive="bg-gray-100 dark:bg-gray-800" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Recent</a>
+    <a routerLink="/shared-link" routerLinkActive="bg-gray-100 dark:bg-gray-800" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Shared Link</a>
+    <a routerLink="/favorite" routerLinkActive="bg-gray-100 dark:bg-gray-800" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Favorite</a>
+    <a routerLink="/trash" routerLinkActive="bg-gray-100 dark:bg-gray-800" class="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800">Trash</a>
+  </nav>
 
-  <!-- Storage Usage -->
-  <div class="px-6 py-4 text-sm bg-teal-900">
-    <p class="mb-2 font-semibold">Storage</p>
-
-    <div class="w-full h-2 bg-teal-600 rounded-full overflow-hidden">
-      <div
-        class="h-full bg-white rounded-full transition-all duration-300"
-        [style.width.%]="usagePercent"
-      ></div>
+  <!-- Storage Section -->
+  <div class="px-6 py-4 bg-gray-50 dark:bg-gray-800">
+    <p class="mb-2 font-semibold text-xs">Storage</p>
+    <div class="w-full h-2 bg-gray-300 dark:bg-gray-600 rounded">
+      <div class="h-full bg-green-500 rounded" [style.width.%]="usagePercent"></div>
     </div>
-
-    <p class="mt-2 text-xs text-gray-200">
+    <p class="mt-1 text-xs text-gray-600 dark:text-gray-300">
       {{ usedStorage }} GB of {{ totalStorage }} GB used
     </p>
-
-    <button class="mt-2 w-full text-xs py-1 px-2 rounded bg-white text-teal-800 hover:bg-gray-100 transition">
+    <button class="mt-2 w-full text-xs py-1 px-2 bg-blue-600 text-white rounded hover:bg-blue-700">
       Upgrade Plan
     </button>
   </div>

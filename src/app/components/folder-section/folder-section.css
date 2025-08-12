@@ -57,3 +57,14 @@ input:focus {
   font-weight: 500;
   color: #333;
 }
+
+.drag-active {
+  background-color: rgba(0, 123, 255, 0.1);
+  border-color: #007bff;
+}
+
+.drag-over {
+  border: 2px dashed #0d9488; /* teal border */
+  background-color: rgba(13, 148, 136, 0.05);
+}
+

@@ -1,32 +1,38 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, NavigationEnd, Router } from '@angular/router';
-import { Topbar } from "./components/layout/topbar/topbar";
-import { Sidebar } from "./components/layout/sidebar/sidebar";
+import { Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ThemeService } from './services/theme.service';
-import { filter } from 'rxjs';
-import { StorageOverview } from "./components/storage-overview/storage-overview";
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, Topbar, Sidebar, StorageOverview],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrls: ['./app.css']
 })
-export class App implements OnInit {
-  showStorageChart = false;
+export class AppComponent implements OnInit {
+  showMainLayout = false;
 
-  constructor(private themeService: ThemeService, private router: Router) {}
+  constructor(
+    private themeService: ThemeService,
+    private router: Router,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.themeService.loadTheme();
+    this.showMainLayout = this.authService.isLoggedIn();
+  }
 
-    this.router.events.pipe(
-      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
-    ).subscribe((event) => {
-      const url = event.urlAfterRedirects;
-      this.showStorageChart = url === '/my-storage' || url.startsWith('/my-storage/folder');
-    });
+  loginSuccess() {
+    this.showMainLayout = true;
+    this.router.navigate(['/dashboard']);
+  }
+
+  logout() {
+    this.authService.logout(); // removes token
+    this.showMainLayout = false;
+    this.router.navigate(['/login']);
   }
 }

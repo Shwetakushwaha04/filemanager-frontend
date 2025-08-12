@@ -31,7 +31,33 @@ export class Topbar {
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file) console.log('File selected:', file.name);
+    if (!file) return;
+    const location: 'dashboard' | 'my-storage' = this.router.url.includes(
+      'my-storage'
+    )
+      ? 'my-storage'
+      : 'dashboard';
+    const folderMatch = this.router.url.match(/\/folder\/([^/]+)/);
+    const parentId = folderMatch ? folderMatch[1] : 'root';
+
+    const fileMeta = {
+      id: crypto.randomUUID(),
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      mime: file.type,
+      uuid: crypto.randomUUID(),
+      extension: file.name.split('.').pop() || '',
+      parentId,
+      location,
+      createdAt: Date.now(),
+    };
+
+    const savedFiles = JSON.parse(localStorage.getItem('files') || '[]');
+    savedFiles.push(fileMeta);
+    localStorage.setItem('files', JSON.stringify(savedFiles));
+
+    console.log('📄 File saved:', fileMeta);
   }
 
   // ✅ Called when clicking '+ New Folder'
@@ -45,9 +71,18 @@ export class Topbar {
     const parentId = folderMatch ? folderMatch[1] : 'root';
 
     // create the folder
-    this.folderService.createFolder('Untitled folder', location as 'dashboard' | 'my-storage', parentId);
+    this.folderService.createFolder(
+      'Untitled folder',
+      location as 'dashboard' | 'my-storage',
+      parentId
+    );
 
-    console.log('📁 Folder created in:', location, '→ inside folder:', parentId);
+    console.log(
+      '📁 Folder created in:',
+      location,
+      '→ inside folder:',
+      parentId
+    );
   }
 
   // 🔐 For modal closing (optional if you're using a rename popup)

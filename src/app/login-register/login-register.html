@@ -1,0 +1,72 @@
+<div class="flex items-center justify-center min-h-screen bg-gray-50 font-sans">
+  <div class="w-full max-w-md bg-white rounded-lg shadow-lg p-10">
+    <!-- Logo + Heading -->
+    <div class="flex flex-col items-center">
+      <h1 class="text-[28px] font-normal text-gray-800 leading-tight">
+        {{ isLogin ? 'Sign in' : 'Create your account' }}
+      </h1>
+      <p class="text-sm text-gray-500 mb-8">
+        to continue to File Manager
+      </p>
+    </div>
+
+    <div *ngIf="!isLogin">
+  <input type="text" [(ngModel)]="name" placeholder="Name" name="name" required>
+</div>
+
+
+    <!-- Email -->
+    <div class="mb-6">
+      <input
+        type="email"
+        placeholder="Email"
+        [(ngModel)]="email"
+        class="w-full border border-gray-300 rounded px-3 py-3 focus:outline-none focus:border-blue-600"
+      />
+    </div>
+
+    <!-- Password -->
+    <div class="mb-6">
+      <input
+        type="password"
+        placeholder="Password"
+        [(ngModel)]="password"
+        class="w-full border border-gray-300 rounded px-3 py-3 focus:outline-none focus:border-blue-600"
+      />
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="mb-6" *ngIf="!isLogin">
+      <input
+        type="password"
+        placeholder="Confirm Password"
+        [(ngModel)]="confirmPassword"
+        class="w-full border border-gray-300 rounded px-3 py-3 focus:outline-none focus:border-blue-600"
+      />
+    </div>
+
+    <!-- Forgot Password -->
+    <div class="text-right mb-6" *ngIf="isLogin">
+      <a href="#" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+    </div>
+
+    <!-- Submit -->
+    <button
+      (click)="submit()"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded font-medium text-base"
+    >
+      {{ isLogin ? 'Next' : 'Sign Up' }}
+    </button>
+
+    <!-- Toggle -->
+    <div class="text-center mt-8">
+      <a
+        href="#"
+        (click)="isLogin = !isLogin"
+        class="text-sm text-blue-600 hover:underline"
+      >
+        {{ isLogin ? 'Create account' : 'Already have an account? Sign in' }}
+      </a>
+    </div>
+  </div>
+</div>

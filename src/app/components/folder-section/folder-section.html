@@ -1,91 +1,119 @@
 <!-- Top welcome message -->
-<div class="dashboard-header">
-  <h1>
-    Welcome to {{ location === 'dashboard' ? 'Your Dashboard' : 'Your Storage'
-    }}
-  </h1>
-  <p>All your folders and files at one place.</p>
+@if (location === 'my-storage' && !insideFolder) {
+  <div class="dashboard-header">
+    <h1>Welcome to Your Storage</h1>
+    <p>All your folders and files at one place.</p>
+  </div>
+}
 
-  <!-- Show when no folders -->
-  <div *ngIf="folders.length === 0" class="empty-dashboard">
+<!-- Show when no folders -->
+@if (folders.length === 0) {
+  <div class="empty-dashboard">
     <h2>No folders found</h2>
     <p>Click "+ New Folder" to get started!</p>
   </div>
+}
+
+<!-- Drag & Drop Upload Area -->
+<div
+  class="relative border-2 border-dashed border-gray-300 rounded-lg p-6 text-center my-4"
+  (drop)="onDrop($event)"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  [class.drag-active]="isDragActive">
+
+  @if (!isDragActive) {
+    <p>Drag & Drop files here or click to upload</p>
+  } @else {
+    <p class="text-blue-500 font-bold">Drop files to upload</p>
+  }
+
+  <input type="file" multiple hidden #fileInput (change)="onFileSelect($event)">
+  <button class="mt-2 px-4 py-2 bg-blue-500 text-white rounded" (click)="fileInput.click()">
+    Browse Files
+  </button>
 </div>
-<div class="flex flex-wrap gap-6">
-  <div
-    *ngFor="let folder of folders"
-    class="group relative border rounded-xl p-4 bg-white dark:bg-gray-800 shadow hover:shadow-lg transition cursor-pointer w-48"
-    (dblclick)="goToFolder(folder.id)"
-  >
-    <!-- Checkbox + Context menu trigger -->
-    <div
-      class="absolute top-2 left-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition"
-    >
-      <input type="checkbox" class="accent-teal-600 w-4 h-4" />
-    </div>
 
-    <!-- 3-dot menu trigger -->
-    <div
-      class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition"
-    >
-      <button
-        class="text-gray-400 hover:text-black dark:hover:text-white text-lg"
-        (click)="toggleMenu(folder.id); $event.stopPropagation()"
-      >
-        ⋮
-      </button>
-    </div>
-
-    <!-- 📁 Folder Icon -->
-    <div class="text-5xl mb-2 text-yellow-500">📁</div>
-
-    <!-- Folder name (editable or view) -->
-    <div *ngIf="folder.isEditing; else folderNameView">
-      <input
-        [(ngModel)]="folder.name"
-        (keydown.enter)="finishRename(folder)"
-        (blur)="finishRename(folder)"
-        class="border px-2 py-1 rounded w-full"
-        autofocus
-      />
-    </div>
-
-    <ng-template #folderNameView>
-      <div class="font-semibold text-sm flex items-center justify-between">
-        {{ folder.name }}
-        <button
-          class="text-xs text-gray-400 hover:text-blue-600"
-          (click)="startRename(folder)"
-          title="Rename"
-        >
-          ✏️
-        </button>
-      </div>
-    </ng-template>
-
-    <!-- Folder date -->
-    <div class="text-xs text-gray-400 mt-1">
-      {{ folder.createdAt | date: 'short' }}
-    </div>
-
-    <!-- Context Menu -->
-    <div
-      *ngIf="menuOpenForId === folder.id"
-      class="absolute right-0 mt-1 w-32 bg-white dark:bg-gray-900 border rounded shadow z-50"
-    >
-      <button
-        class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
-        (click)="startRename(folder); $event.stopPropagation()"
-      >
-        Rename
-      </button>
-      <button
-        class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
-        (click)="folderService.deleteFolder(folder.id); $event.stopPropagation()"
-      >
-        Delete
-      </button>
+<!-- Upload Progress -->
+@for (upload of uploads; track upload.name) {
+  <div class="mt-2">
+    <span>{{ upload.name }}</span>
+    <div class="w-full bg-gray-200 rounded h-2">
+      <div class="bg-green-500 h-2 rounded" [style.width.%]="upload.progress"></div>
     </div>
   </div>
+}
+
+<!-- Folder grid -->
+<div class="flex flex-wrap gap-6">
+  @for (folder of folders; track folder.id) {
+    <div
+      class="group relative border rounded-xl p-4 bg-white dark:bg-gray-800 shadow hover:shadow-lg transition cursor-pointer w-48"
+      (click)="onSingleClick(folder.id)"
+      (dblclick)="onDoubleClick(folder.id)"
+    >
+      <!-- Checkbox -->
+      <div class="absolute top-2 left-2 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition">
+        <input type="checkbox" class="accent-teal-600 w-4 h-4" />
+      </div>
+
+      <!-- Menu trigger -->
+      <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition">
+        <button
+          class="text-gray-400 hover:text-black dark:hover:text-white text-lg"
+          (click)="toggleMenu(folder.id); $event.stopPropagation()"
+        >
+          ⋮
+        </button>
+      </div>
+
+      <!-- 📁 Folder Icon -->
+      <div class="text-5xl mb-2 text-yellow-500">📁</div>
+
+      <!-- Name -->
+      @if (folder.isEditing) {
+        <input
+          [(ngModel)]="folder.name"
+          (keydown.enter)="finishRename(folder)"
+          (blur)="finishRename(folder)"
+          class="border px-2 py-1 rounded w-full"
+          autofocus
+        />
+      } @else {
+        <div class="font-semibold text-sm flex items-center justify-between">
+          {{ folder.name }}
+          <button
+            class="text-xs text-gray-400 hover:text-blue-600"
+            (click)="startRename(folder)"
+            title="Rename"
+          >
+            ✏️
+          </button>
+        </div>
+      }
+
+      <!-- Date -->
+      <div class="text-xs text-gray-400 mt-1">
+        {{ folder.createdAt | date: 'short' }}
+      </div>
+
+      <!-- Context Menu -->
+      @if (menuOpenForId === folder.id) {
+        <div class="absolute right-0 mt-1 w-32 bg-white dark:bg-gray-900 border rounded shadow z-50">
+          <button
+            class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
+            (click)="startRename(folder); $event.stopPropagation()"
+          >
+            Rename
+          </button>
+          <button
+            class="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm"
+            (click)="folderService.deleteFolder(folder.id); $event.stopPropagation()"
+          >
+            Delete
+          </button>
+        </div>
+      }
+    </div>
+  }
 </div>

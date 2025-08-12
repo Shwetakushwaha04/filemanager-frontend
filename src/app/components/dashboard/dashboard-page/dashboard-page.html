@@ -1,0 +1,51 @@
+<!-- Dashboard Wrapper -->
+<div class="space-y-6">
+
+  <!-- Welcome Heading -->
+  <div class="text-2xl font-semibold mb-2">Welcome to Your Dashboard</div>
+  <p class="text-sm text-gray-500 dark:text-gray-400">All your folders and files in one place.</p>
+
+  <!-- Suggested Folders -->
+  <div>
+    <h3 class="text-lg font-medium mb-2">Suggested folders</h3>
+    <div class="flex gap-4 overflow-x-auto">
+      <div
+        *ngFor="let folder of suggestedFolders"
+        class="min-w-[200px] flex items-center gap-3 bg-gray-100 dark:bg-gray-800 p-3 rounded-lg shadow-sm"
+      >
+        <div class="text-3xl">📁</div>
+        <div>
+          <div class="font-medium text-sm">{{ folder.name }}</div>
+          <div class="text-xs text-gray-500">Shared with you</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Suggested Files -->
+  <div>
+    <h3 class="text-lg font-medium mt-6 mb-2">Suggested files</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm text-left border-collapse">
+        <thead class="text-gray-500 dark:text-white border-b">
+          <tr>
+            <th class="py-2 px-3">Name</th>
+            <th class="py-2 px-3">Reason suggested</th>
+            <th class="py-2 px-3">Location</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let file of suggestedFiles"
+            class="hover:bg-gray-50 text-gray-500 dark:text-white transition"
+          >
+            <td class="py-2 px-3 font-medium">{{ file.name }}</td>
+            <td class="py-2 px-3">{{ file.reason }}</td>
+            <td class="py-2 px-3">{{ file.location }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>

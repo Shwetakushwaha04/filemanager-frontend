@@ -1,0 +1,25 @@
+<div class="p-4">
+  <h3 class="font-semibold text-lg mb-4">📝 Notes</h3>
+  <div class="flex gap-2 mb-4">
+    <input
+      [(ngModel)]="newNote"
+      placeholder="Take a note..."
+      class="w-full p-2 border rounded mb-4 dark:bg-grey-800 dark:text-white"
+    />
+    <button
+      (click)="addNote()"
+      class="bg-yellow-400 text-white px-3 py-1 rounded text-sm"
+    >
+      Add
+    </button>
+  </div>
+
+  <div class="mt-4 space-y-2">
+    <div
+      *ngFor="let note of notes"
+      class="p-3 mb-2 shadow-sm border rounded dark:bg-gray-800 dark:text-white"
+    >
+      {{note}}
+    </div>
+  </div>
+</div>
