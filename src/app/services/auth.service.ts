@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthService {
-  private API_URL = 'http://127.0.0.1:8000/'; // FastAPI backend URL
+  private API_URL = 'http://127.0.0.1:8000'; // FastAPI backend URL
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -18,16 +18,22 @@ export class AuthService {
     body.set('username', email); // OAuth2 expects "username"
     body.set('password', password);
 
-    return this.http.post(`${this.API_URL}/token`, body.toString(), {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    });
+    return this.http
+      .post(`${this.API_URL}/token`, body.toString(), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      })
+      .pipe(
+        tap((res: any) => {
+          localStorage.setItem('token', res.access_token); // Store token
+        })
+      );
   }
 
   /** Register a new user */
-  register(email: string, username: string, password: string): Observable<any> {
+  register(name: string, email: string, password: string): Observable<any> {
     const body = {
       email: email,
-      username: username,
+      name: name,
       password: password,
     };
     return this.http.post(`${this.API_URL}/register`, body, {
