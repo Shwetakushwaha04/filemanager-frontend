@@ -24,10 +24,10 @@ import { ThemeService } from '../../../services/theme.service';
     FolderSection,
     FileGrid,
     NotesPanel,
-    CalendarPanel
+    CalendarPanel,
   ],
   templateUrl: './main-layout.html',
-  styleUrls: ['./main-layout.css']
+  styleUrls: ['./main-layout.css'],
 })
 export class MainLayoutComponent implements OnInit {
   selectedFolderId: string | null = null;
@@ -41,7 +41,11 @@ export class MainLayoutComponent implements OnInit {
     this.themeService.loadTheme();
 
     this.router.events
-      .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd
+        )
+      )
       .subscribe((event) => {
         const url = event.urlAfterRedirects;
         if (!url.includes('/folder/') && !url.includes('my-storage')) {

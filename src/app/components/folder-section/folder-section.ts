@@ -1,10 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  output,
-  Output,
-  EventEmitter,
+import { Component, OnInit, OnDestroy, Output, EventEmitter
 } from '@angular/core';
 import { FolderService } from '../../services/folder.service';
 import { Folder } from '../../models/folder.model';

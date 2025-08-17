@@ -1,5 +1,4 @@
-<!-- main-layout.component.html -->
-<div class="flex h-screen bg-gray-100">
+<div class="flex h-screen bg-white dark:bg-gray-900">
   <!-- Sidebar -->
   <app-sidebar class="w-64"></app-sidebar>
 
@@ -8,28 +7,30 @@
     <!-- Topbar -->
     <app-topbar></app-topbar>
 
-    <!-- Router View for main pages -->
-    <div class="flex-1 overflow-y-auto p-4">
+    <!-- Router content (Dashboard / My Storage / etc.) -->
+    <div class="flex-1 overflow-auto p-6">
       <router-outlet></router-outlet>
     </div>
   </div>
 
-  <!-- Right widget panel -->
-  <div class="w-72 bg-white dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 flex flex-col">
-    @if (isWidgetOpen) {
-      <div class="flex-1 overflow-y-auto p-4">
-        @if (activeWidget === 'notes') {
-          <app-notes-panel></app-notes-panel>
-        }
-        @if (activeWidget === 'calendar') {
-          <app-calendar-panel></app-calendar-panel>
-        }
-      </div>
-    }
-    <!-- Floating widget buttons -->
-    <div class="p-2 flex justify-center gap-2 border-t border-gray-200 dark:border-gray-700">
-      <button (click)="toggleNotes()" class="p-2 rounded-full bg-blue-500 text-white">📝</button>
-      <button (click)="toggleCalendar()" class="p-2 rounded-full bg-green-500 text-white">📅</button>
-    </div>
+  <!-- Floating widget buttons (fixed to right side like before) -->
+  <div class="fixed right-4 top-1/2 -translate-y-1/2 flex flex-col gap-3">
+    <button (click)="toggleNotes()" class="p-3 rounded-full shadow-lg bg-white border border-gray-300 hover:bg-gray-100">
+      📝
+    </button>
+    <button (click)="toggleCalendar()" class="p-3 rounded-full shadow-lg bg-white border border-gray-300 hover:bg-gray-100">
+      📅
+    </button>
+  </div>
+
+  <!-- Widget panels (open when toggled) -->
+  <div class="fixed right-20 bottom-20 w-80 h-[500px] bg-white shadow-xl rounded-xl border border-gray-200"
+       *ngIf="activeWidget === 'notes'">
+    <app-notes-panel></app-notes-panel>
+  </div>
+
+  <div class="fixed right-20 bottom-20 w-80 h-[500px] bg-white shadow-xl rounded-xl border border-gray-200"
+       *ngIf="activeWidget === 'calendar'">
+    <app-calendar-panel></app-calendar-panel>
   </div>
 </div>

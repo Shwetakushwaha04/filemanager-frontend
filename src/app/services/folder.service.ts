@@ -5,10 +5,15 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable({ providedIn: 'root' })
 export class FolderService {
-  private folders = new BehaviorSubject<Folder[]>([]);
+  private folders = new BehaviorSubject<Folder[]>([
+    { id: uuidv4(), name: 'Documents', createdAt: new Date(), location: 'dashboard', isEditing: false },
+    { id: uuidv4(), name: 'Photos', createdAt: new Date(), location: 'dashboard', isEditing: false },
+    { id: uuidv4(), name: 'Videos', createdAt: new Date(), location: 'dashboard', isEditing: false }
+  ]);
+
   folders$ = this.folders.asObservable();
 
-  createFolder(name: string = 'Untitled folder',location: 'dashboard' |'my-storage', parentId?: string) {
+  createFolder(name: string = 'Untitled folder', location: 'dashboard' | 'my-storage', parentId?: string) {
     const newFolder: Folder = {
       id: uuidv4(),
       name,
@@ -21,15 +26,14 @@ export class FolderService {
   }
 
   updateFolder(updated: Folder) {
-  const updatedList = this.folders.value.map(f =>
-    f.id === updated.id ? { ...updated, isEditing: false } : f
-  );
-  this.folders.next(updatedList);
-}
+    const updatedList = this.folders.value.map(f =>
+      f.id === updated.id ? { ...updated, isEditing: false } : f
+    );
+    this.folders.next(updatedList);
+  }
 
-deleteFolder(id: string) {
-  const filtered = this.folders.value.filter(f => f.id !== id);
-  this.folders.next(filtered);
-}
-
+  deleteFolder(id: string) {
+    const filtered = this.folders.value.filter(f => f.id !== id);
+    this.folders.next(filtered);
+  }
 }
